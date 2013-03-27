@@ -2,7 +2,7 @@ A clone of the game Snake. Created to show a way of doing a game in C#.
 Demonstrates how to keep a score mostly safe in memory, implementing the drawing of the game, as
 well as many other things.
 
-Copyright (C) 2013  GEMISIS
+Copyright (C) 2013  Gerald McAlister
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
