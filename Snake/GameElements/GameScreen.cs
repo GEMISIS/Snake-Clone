@@ -15,12 +15,11 @@ namespace Snake
         /// <summary>
         /// The list of sprites that are displayed.
         /// Stored as a picture box because then we have
-        /// coordinates and boundaries for it.
-        /// 
-        /// Note: May be changed to its own
-        /// sprite class in a future update.
+        /// coordinates and boundaries for it with an integer as its key
+        /// (ie: the index).  This particular list is also sorted by the keys,
+        /// which allows for layering of the sprites.
         /// </summary>
-        private List<PictureBox> sprites;
+        private SortedDictionary<int, PictureBox> sprites;
 
         /// <summary>
         /// The constructor for a game screen.
@@ -37,16 +36,17 @@ namespace Snake
             this.DoubleBuffered = true;
 
             // Initialize the sprite list.
-            sprites = new List<PictureBox>();
+            sprites = new SortedDictionary<int, PictureBox>();
         }
 
         /// <summary>
         /// Adds a sprite to the component.
         /// </summary>
+        /// <param name="index">The of the sprite.</param>
         /// <param name="spriteImage">The image to use for the sprite.</param>
         /// <param name="x">The X position of the sprite.</param>
         /// <param name="y">The Y position of the sprite.</param>
-        public void addSprite(Image spriteImage, int x, int y)
+        public void addSprite(int index, Image spriteImage, int x, int y)
         {
             // A temporary picture box is created, and then
             // it's various properties (such as the image, the size, etc.)
@@ -67,7 +67,14 @@ namespace Snake
             pic.Location = new Point(x, y);
 
             // Add the PictureBox to the list of sprites.
-            sprites.Add(pic);
+            if (sprites.ContainsKey(index))
+            {
+                sprites[index] = pic;
+            }
+            else
+            {
+                sprites.Add(index, pic);
+            }
 
             // Dipose of the PictureBox.
             pic.Dispose();
@@ -161,13 +168,13 @@ namespace Snake
         protected override void OnPaint(PaintEventArgs pe)
         {
             // Loop through the list of sprites.
-            foreach (PictureBox sprite in sprites)
+            foreach (KeyValuePair<int, PictureBox> sprite in sprites)
             {
                 // Check that the sprite's image isn't null.
-                if (sprite.Image != null)
+                if (sprite.Value.Image != null)
                 {
                     // Draw the sprite to the screen.
-                    pe.Graphics.DrawImage(sprite.Image, sprite.Location);
+                    pe.Graphics.DrawImage(sprite.Value.Image, sprite.Value.Location);
                 }
             }
             // Call the base's OnPaint method with the same paint event arguments.

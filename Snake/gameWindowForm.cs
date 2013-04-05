@@ -73,9 +73,9 @@ namespace Snake
             gameScreen.addBackgroundLayer(Image.FromFile("images/background1.png"));
 
             // Create the food sprite (index 0).
-            gameScreen.addSprite(Image.FromFile("images/foodDot.png"), 32, 32);
+            gameScreen.addSprite(0, Image.FromFile("images/foodDot.png"), 32, 32);
             // Create the main sprite (index 1).
-            gameScreen.addSprite(Image.FromFile("images/mainDot.png"), 0, 0);
+            gameScreen.addSprite(1, Image.FromFile("images/mainDot.png"), 0, 0);
 
 #if DEBUG
             // If the game is being debugged, set the food to a specific spot each time
@@ -224,7 +224,8 @@ namespace Snake
                 // Next, the score's text label is set to the real score.
                 scoreLabel.Text = "Score: " + (score - scoreSubtractor);
 
-                gameScreen.addSprite(Image.FromFile("images/tailDot.png"), previousLocation.X, previousLocation.Y);
+                // Add the new tail sprite to the screen.
+                gameScreen.addSprite((score - scoreSubtractor) + 1, Image.FromFile("images/tailDot.png"), previousLocation.X, previousLocation.Y);
 
 #if DEBUG
                 // For debug mode, check if the game timer's interval is greater than 50 milliseconds.
