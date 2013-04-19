@@ -12,7 +12,7 @@ namespace Snake
         static void Main()
         {
             // Enable nicer visuals for the game.
-            Application.EnableVisualStyles();
+            //Application.EnableVisualStyles();
 
             // Create a new game form.
             GameWindowForm gameForm = new GameWindowForm();
