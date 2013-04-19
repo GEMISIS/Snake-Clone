@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Snake
 {
@@ -10,7 +11,7 @@ namespace Snake
     /// Everything from the game controls to updating the game screen
     /// component is done in this class.
     /// </summary>
-    public partial class gameWindowForm : Form
+    public partial class GameWindowForm : Form
     {
         /// <summary>
         /// The tile's width.
@@ -53,7 +54,7 @@ namespace Snake
         /// <summary>
         /// The constructor for the main game window form.
         /// </summary>
-        public gameWindowForm()
+        public GameWindowForm()
         {
             // Initialize the main parts of the compnent.
             InitializeComponent();
@@ -68,14 +69,14 @@ namespace Snake
             hashedScore = Encoding.ASCII.GetString((new System.Security.Cryptography.SHA1CryptoServiceProvider()).ComputeHash(Encoding.ASCII.GetBytes((score << 8).ToString())));
 
             // Add the first background layer (the bottom one).
-            gameScreen.addBackgroundLayer(Image.FromFile("images/background0.png"));
+            gameScreen.addBackgroundLayer(Snake.Properties.Resources.background0);
             // Add the second background layer (the top one).
-            gameScreen.addBackgroundLayer(Image.FromFile("images/background1.png"));
+            gameScreen.addBackgroundLayer(Snake.Properties.Resources.background1);
 
             // Create the food sprite (index 0).
-            gameScreen.addSprite(0, Image.FromFile("images/foodDot.png"), 32, 32);
+            gameScreen.addSprite(0, Snake.Properties.Resources.foodDot, 32, 32);
             // Create the main sprite (index 1).
-            gameScreen.addSprite(1, Image.FromFile("images/mainDot.png"), 0, 0);
+            gameScreen.addSprite(1, Snake.Properties.Resources.mainDot, 0, 0);
 
 #if DEBUG
             // If the game is being debugged, set the food to a specific spot each time
@@ -94,8 +95,10 @@ namespace Snake
                     // If there is a collision, restart the loop
                     // through all of the other sprites and
                     // set the food to a new random position.
-                    i = 1;
+                    // Note that it is set to 0 because it will be incremented during
+                    // the next iteration.
                     gameScreen.setSpritePosition(0, (new Random().Next((gameScreen.Width - 64) / TILE_WIDTH)) * TILE_WIDTH, (new Random().Next((gameScreen.Height - 64) / TILE_HEIGHT)) * TILE_HEIGHT);
+                    i = 0;
                 }
             }
 #endif
@@ -197,11 +200,30 @@ namespace Snake
                     // Then, the graphics timer is stopped so the graphics don't keep updating.
                     gfxTimer.Stop();
                     // Next, a game over message is shown with the player's final score.
-                    // The message box will halt the program until the "ok" button on it is
-                    // clicked.
-                    MessageBox.Show("Game Over!\nFinal Score: " + (score - scoreSubtractor));
+                    // The message box will halt the program until an option is selected, and
+                    // then store the results.
+                    DialogResult results = MessageBox.Show("Game Over! Final Score: " + (score - scoreSubtractor) + " Play again?", "Game Over", MessageBoxButtons.YesNo);
+
+                    // Check whether the currently stored hashed score is equal to the score being
+                    // hashed again.  This helps to make sure that the score cannot be edited in memory, by making
+                    // it harder to find, but is not a full proof method unfortunately, but it does a very good
+                    // job.
+                    if (hashedScore.Equals(Encoding.ASCII.GetString((new System.Security.Cryptography.SHA1CryptoServiceProvider()).ComputeHash(Encoding.ASCII.GetBytes((score << 8).ToString())))))
+                    {
+                        new HighScores((score - scoreSubtractor)).ShowDialog();
+                    }
+
                     // After the message box has been clicked, the game closes.
                     this.Close();
+
+                    if (results == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        this.DialogResult = System.Windows.Forms.DialogResult.Yes;
+                    }
+                    else
+                    {
+                        this.DialogResult = System.Windows.Forms.DialogResult.No;
+                    }
                 }
             }
 
@@ -225,7 +247,7 @@ namespace Snake
                 scoreLabel.Text = "Score: " + (score - scoreSubtractor);
 
                 // Add the new tail sprite to the screen.
-                gameScreen.addSprite((score - scoreSubtractor) + 1, Image.FromFile("images/tailDot.png"), previousLocation.X, previousLocation.Y);
+                gameScreen.addSprite((score - scoreSubtractor) + 1, Snake.Properties.Resources.tailDot, previousLocation.X, previousLocation.Y);
 
 #if DEBUG
                 // For debug mode, check if the game timer's interval is greater than 50 milliseconds.
@@ -258,8 +280,10 @@ namespace Snake
                         // If there is a collision, restart the loop
                         // through all of the other sprites and
                         // set the food to a new random position.
-                        i = 1;
+                        // Note that it is set to 0 because it will be incremented during
+                        // the next iteration.
                         gameScreen.setSpritePosition(0, (new Random().Next((gameScreen.Width - 64) / TILE_WIDTH)) * TILE_WIDTH, (new Random().Next((gameScreen.Height - 64) / TILE_HEIGHT)) * TILE_HEIGHT);
+                        i = 0;
                     }
                 }
 #endif

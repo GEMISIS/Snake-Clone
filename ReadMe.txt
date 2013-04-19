@@ -1,6 +1,12 @@
 A clone of the game Snake. Created to show a way of doing a game in C#.
-Demonstrates how to keep a score mostly safe in memory, implementing the drawing of the game, as
-well as many other things.
+Demonstrates how to keep a score mostly safe in memory, implementing the
+drawing of the game, as well as many other things.
+
+Controls: Use AWSD to control the character.
+A - Left
+S - Down
+D - Right
+W - Up
 
 Copyright (C) 2013  Gerald McAlister
 

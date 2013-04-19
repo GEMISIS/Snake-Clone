@@ -75,9 +75,6 @@ namespace Snake
             {
                 sprites.Add(index, pic);
             }
-
-            // Dipose of the PictureBox.
-            pic.Dispose();
         }
 
         /// <summary>

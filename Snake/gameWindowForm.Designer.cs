@@ -1,6 +1,6 @@
 ﻿namespace Snake
 {
-    partial class gameWindowForm
+    partial class GameWindowForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameWindowForm));
             this.scoreLabel = new System.Windows.Forms.Label();
             this.gameScreen = new Snake.GameScreen();
             this.SuspendLayout();
@@ -35,14 +36,18 @@
             // scoreLabel
             // 
             this.scoreLabel.AutoSize = true;
-            this.scoreLabel.Location = new System.Drawing.Point(12, 9);
+            this.scoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scoreLabel.Location = new System.Drawing.Point(12, 2);
             this.scoreLabel.Name = "scoreLabel";
-            this.scoreLabel.Size = new System.Drawing.Size(47, 13);
+            this.scoreLabel.Size = new System.Drawing.Size(68, 20);
             this.scoreLabel.TabIndex = 1;
             this.scoreLabel.Text = "Score: 0";
             // 
             // gameScreen
             // 
+            this.gameScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.gameScreen.BackColor = System.Drawing.Color.White;
             this.gameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.gameScreen.Location = new System.Drawing.Point(13, 25);
@@ -59,7 +64,12 @@
             this.Controls.Add(this.scoreLabel);
             this.Controls.Add(this.gameScreen);
             this.DoubleBuffered = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(640, 480);
+            this.MinimumSize = new System.Drawing.Size(320, 240);
             this.Name = "gameWindowForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Snake";
             this.ResumeLayout(false);
             this.PerformLayout();
